@@ -1,0 +1,14 @@
+{
+    "logs_directory": "logs",
+    "forwarder_port": 800,
+    "websocket_port": 58010,
+    "flask_port": 58011,
+    "forwarder_host": "127.0.0.1",
+    "websocket_host": "0.0.0.0",
+    "flask_host": "0.0.0.0",
+    "data_directory": "users",
+    "frontend_directory": "htdocs",
+    "ssl_cert_file": "domain.pem",
+    "ssl_key_file": "domain.key",
+    "websocket_entry": "ws://127.0.0.1:800"
+}
