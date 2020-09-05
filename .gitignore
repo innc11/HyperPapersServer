@@ -1,3 +1,14 @@
+__pycache__/
+*.key
+*.pem
+.idea/
+logs/
+config.json
+users/
+start.cmd
+venv.bat
+htdocs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
