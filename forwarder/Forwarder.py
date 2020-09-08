@@ -40,8 +40,8 @@ class Forwarder(threading.Thread):
                             clientConn, clientAddress = ssock.accept()
 
                             ProtocolDetector(self, clientConn, clientAddress).start()
-                except Exception as e:
-                    self.logger.error(e, exc_info=True)
+                except BaseException as e:
+                    self.logger.error(e, exc_info=False)
         else:
             while True:
                 self.openSock()
@@ -49,5 +49,5 @@ class Forwarder(threading.Thread):
                     try:
                         clientConn, clientAddress = self.sock.accept()
                         ProtocolDetector(self, clientConn, clientAddress).start()
-                    except Exception as e:
-                        self.logger.error(e, exc_info=True)
+                    except BaseException as e:
+                        self.logger.error(e, exc_info=False)
