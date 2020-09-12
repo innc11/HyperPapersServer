@@ -23,10 +23,6 @@ class Forwarder(threading.Thread):
         self.count = 0
 
     def openSock(self):
-
-        if self.sock is not None:
-            self.sock.close()
-
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) if self.sslContext is not None else socket.socket(
             socket.AF_INET, socket.SOCK_STREAM, proto=0)
         self.sock.bind((self.hostAddress, self.listenPort))
@@ -35,8 +31,6 @@ class Forwarder(threading.Thread):
         self.logger.info(f"Forwarder is listening on {self.listenPort}, {url}")
 
     def run(self):
-
-
         if self.sslContext is not None:
             while True:
                 self.openSock()
@@ -48,6 +42,9 @@ class Forwarder(threading.Thread):
                             ProtocolDetector(self, clientConn, clientAddress).start()
                 except BaseException as e:
                     self.logger.error(e, exc_info=False)
+                finally:
+                    self.sock.close()
+                    self.sock = None
         else:
             while True:
                 self.openSock()
@@ -57,3 +54,6 @@ class Forwarder(threading.Thread):
                         ProtocolDetector(self, clientConn, clientAddress).start()
                     except BaseException as e:
                         self.logger.error(e, exc_info=False)
+                    finally:
+                        self.sock.close()
+                        self.sock = None
