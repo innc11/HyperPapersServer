@@ -23,14 +23,16 @@ class Forwarder(threading.Thread):
         self.count = 0
 
     def openSock(self):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) if self.sslContext is not None else socket.socket(
-            socket.AF_INET, socket.SOCK_STREAM, proto=0)
-        self.sock.bind((self.hostAddress, self.listenPort))
         self.sock.listen(100)
         url = ('https' if self.sslContext is not None else 'http') + '://' + self.hostAddress + ':' + str(self.listenPort)
         self.logger.info(f"Forwarder is listening on {self.listenPort}, {url}")
 
     def run(self):
+
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) if self.sslContext is not None else socket.socket(
+            socket.AF_INET, socket.SOCK_STREAM, proto=0)
+        self.sock.bind((self.hostAddress, self.listenPort))
+
         if self.sslContext is not None:
             while True:
                 self.openSock()
@@ -41,7 +43,7 @@ class Forwarder(threading.Thread):
 
                             ProtocolDetector(self, clientConn, clientAddress).start()
                 except BaseException as e:
-                    self.logger.error(e, exc_info=False)
+                    self.logger.error(e, exc_info=True)
                 self.sock.close()
                 self.sock = None
         else:
@@ -52,6 +54,6 @@ class Forwarder(threading.Thread):
                         clientConn, clientAddress = self.sock.accept()
                         ProtocolDetector(self, clientConn, clientAddress).start()
                     except BaseException as e:
-                        self.logger.error(e, exc_info=False)
+                        self.logger.error(e, exc_info=True)
                     self.sock.close()
                     self.sock = None
