@@ -1,6 +1,5 @@
 import socket
 import threading
-import time
 from logging import Logger
 
 from forwarder.ProtocolDetector import ProtocolDetector
@@ -26,6 +25,7 @@ class Forwarder(threading.Thread):
     def openSock(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) if self.sslContext is not None else socket.socket(
             socket.AF_INET, socket.SOCK_STREAM, proto=0)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((self.hostAddress, self.listenPort))
         self.sock.listen(100)
         url = ('https' if self.sslContext is not None else 'http') + '://' + self.hostAddress + ':' + str(self.listenPort)
