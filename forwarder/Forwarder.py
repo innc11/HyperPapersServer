@@ -44,8 +44,6 @@ class Forwarder(threading.Thread):
                 except BaseException as e:
                     self.logger.error(e, exc_info=True)
                     self.sock.close()
-                    self.sock = None
-                    time.sleep(60)
         else:
             while True:
                 self.openSock()
@@ -56,5 +54,3 @@ class Forwarder(threading.Thread):
                     except BaseException as e:
                         self.logger.error(e, exc_info=True)
                         self.sock.close()
-                        self.sock = None
-                        time.sleep(60)
