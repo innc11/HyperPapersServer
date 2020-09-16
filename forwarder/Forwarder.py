@@ -44,8 +44,8 @@ class Forwarder(threading.Thread):
                             ProtocolDetector(self, clientConn, clientAddress).start()
                 except BaseException as e:
                     self.logger.error(e, exc_info=True)
-                self.sock.close()
-                self.sock = None
+                    self.sock.close()
+                    # self.sock = None
         else:
             while True:
                 self.openSock()
@@ -55,5 +55,5 @@ class Forwarder(threading.Thread):
                         ProtocolDetector(self, clientConn, clientAddress).start()
                     except BaseException as e:
                         self.logger.error(e, exc_info=True)
-                    self.sock.close()
-                    self.sock = None
+                        self.sock.close()
+                        # self.sock = None
