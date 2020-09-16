@@ -1,5 +1,6 @@
 import socket
 import threading
+import time
 from logging import Logger
 
 from forwarder.ProtocolDetector import ProtocolDetector
@@ -42,8 +43,9 @@ class Forwarder(threading.Thread):
                             ProtocolDetector(self, clientConn, clientAddress).start()
                 except BaseException as e:
                     self.logger.error(e, exc_info=True)
-                    self.sock.shutdown(0)
+                    self.sock.close()
                     self.sock = None
+                    time.sleep(60)
         else:
             while True:
                 self.openSock()
@@ -53,5 +55,6 @@ class Forwarder(threading.Thread):
                         ProtocolDetector(self, clientConn, clientAddress).start()
                     except BaseException as e:
                         self.logger.error(e, exc_info=True)
-                        self.sock.shutdown(0)
+                        self.sock.close()
                         self.sock = None
+                        time.sleep(60)
