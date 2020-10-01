@@ -107,8 +107,14 @@ class WsServer:
         try:
             await self.authenticate()
 
+            # 告诉客户端认证通过
+            await self.sendMessage({
+                "action": "authenticated",
+                "user": self.user
+            })
+
             # 显示Welcome信息
-            await self.bubble(f"已登录({self.user})", 4000)
+            # await self.bubble(f"已登录({self.user})", 4000)
 
             # 服务主循环
             while True:
